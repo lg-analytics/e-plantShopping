@@ -1,14 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import './ProductList.css'
+import { useState } from 'react';
+import './ProductList.css';
 import CartItem from './CartItem';
-import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from './CartSlice';
+import { useDispatch } from 'react-redux';
+import { addItem } from './CartSlice'; 
+import PropTypes from 'prop-types';
+
 function ProductList({ onHomeClick }) {
-    const [showCart, setShowCart] = useState(false);
-    const [showPlants, setShowPlants] = useState(false);
-    const [addedToCart, setAddedToCart] = useState({});
     const dispatch = useDispatch();
-    const cartItems = useSelector(state => state.cart.items); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
+    const [showCart, setShowCart] = useState(false);
+
+    const handleAddToCart = (plant) => {
+        dispatch(addItem(plant));
+        setAddedToCart(prev => ({
+            ...prev,
+            [plant.name]: true
+        }));
+    };
+
+    const handleHomeClick = (e) => {
+        e.preventDefault();
+        onHomeClick();
+    };
+
+    const handleCartClick = (e) => {
+        e.preventDefault();
+        setShowCart(true);
+    };
+
+    const handlePlantsClick = (e) => {
+        e.preventDefault();
+        setShowCart(false);
+    };
+
+    const handleContinueShopping = (e) => {
+        e.preventDefault();
+        setShowCart(false);
+    };
 
     const plantsArray = [
         {
@@ -57,13 +85,13 @@ function ProductList({ onHomeClick }) {
             plants: [
                 {
                     name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop",
                     description: "Calming scent, used in aromatherapy.",
                     cost: "$20"
                 },
                 {
                     name: "Jasmine",
-                    image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1592729645009-b96d1e63d14b?q=80&w=1170&auto=format&fit=crop",
                     description: "Sweet fragrance, promotes relaxation.",
                     cost: "$18"
                 },
@@ -97,9 +125,9 @@ function ProductList({ onHomeClick }) {
             category: "Insect Repellent Plants",
             plants: [
                 {
-                    name: "oregano",
+                    name: "Oregano",
                     image: "https://cdn.pixabay.com/photo/2015/05/30/21/20/oregano-790702_1280.jpg",
-                    description: "The oregano plants contains compounds that can deter certain insects.",
+                    description: "Contains compounds that can deter insects.",
                     cost: "$10"
                 },
                 {
@@ -111,7 +139,7 @@ function ProductList({ onHomeClick }) {
                 {
                     name: "Geraniums",
                     image: "https://cdn.pixabay.com/photo/2012/04/26/21/51/flowerpot-43270_1280.jpg",
-                    description: "Known for their insect-repelling properties while adding a pleasant scent.",
+                    description: "Repels insects and adds a pleasant scent.",
                     cost: "$20"
                 },
                 {
@@ -119,12 +147,6 @@ function ProductList({ onHomeClick }) {
                     image: "https://cdn.pixabay.com/photo/2016/07/24/20/48/tulsi-1539181_1280.jpg",
                     description: "Repels flies and mosquitoes, also used in cooking.",
                     cost: "$9"
-                },
-                {
-                    name: "Lavender",
-                    image: "https://images.unsplash.com/photo-1611909023032-2d6b3134ecba?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    description: "Calming scent, used in aromatherapy.",
-                    cost: "$20"
                 },
                 {
                     name: "Catnip",
@@ -138,12 +160,6 @@ function ProductList({ onHomeClick }) {
             category: "Medicinal Plants",
             plants: [
                 {
-                    name: "Aloe Vera",
-                    image: "https://cdn.pixabay.com/photo/2018/04/02/07/42/leaf-3283175_1280.jpg",
-                    description: "Soothing gel used for skin ailments.",
-                    cost: "$14"
-                },
-                {
                     name: "Echinacea",
                     image: "https://cdn.pixabay.com/photo/2014/12/05/03/53/echinacea-557477_1280.jpg",
                     description: "Boosts immune system, helps fight colds.",
@@ -154,12 +170,6 @@ function ProductList({ onHomeClick }) {
                     image: "https://cdn.pixabay.com/photo/2017/07/12/12/23/peppermint-2496773_1280.jpg",
                     description: "Relieves digestive issues and headaches.",
                     cost: "$13"
-                },
-                {
-                    name: "Lemon Balm",
-                    image: "https://cdn.pixabay.com/photo/2019/09/16/07/41/balm-4480134_1280.jpg",
-                    description: "Calms nerves and promotes relaxation.",
-                    cost: "$14"
                 },
                 {
                     name: "Chamomile",
@@ -180,7 +190,7 @@ function ProductList({ onHomeClick }) {
             plants: [
                 {
                     name: "ZZ Plant",
-                    image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    image: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?q=80&w=464&auto=format&fit=crop",
                     description: "Thrives in low light and requires minimal watering.",
                     cost: "$25"
                 },
@@ -191,15 +201,9 @@ function ProductList({ onHomeClick }) {
                     cost: "$10"
                 },
                 {
-                    name: "Snake Plant",
-                    image: "https://cdn.pixabay.com/photo/2021/01/22/06/04/snake-plant-5939187_1280.jpg",
-                    description: "Needs infrequent watering and is resilient to most pests.",
-                    cost: "$15"
-                },
-                {
                     name: "Cast Iron Plant",
                     image: "https://cdn.pixabay.com/photo/2017/02/16/18/04/cast-iron-plant-2072008_1280.jpg",
-                    description: "Hardy plant that tolerates low light and neglect.",
+                    description: "Tolerates low light and neglect.",
                     cost: "$20"
                 },
                 {
@@ -211,127 +215,96 @@ function ProductList({ onHomeClick }) {
                 {
                     name: "Aglaonema",
                     image: "https://cdn.pixabay.com/photo/2014/10/10/04/27/aglaonema-482915_1280.jpg",
-                    description: "Requires minimal care and adds color to indoor spaces.",
+                    description: "Requires minimal care and adds color indoors.",
                     cost: "$22"
                 }
             ]
         }
     ];
+
     const styleObj = {
         backgroundColor: '#4CAF50',
-        color: '#fff!important',
+        color: '#fff',
         padding: '15px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignIems: 'center',
+        alignItems: 'center',
         fontSize: '20px',
-    }
+    };
+
     const styleObjUl = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '1100px',
-    }
+    };
+
     const styleA = {
         color: 'white',
         fontSize: '30px',
         textDecoration: 'none',
-    }
-
-    const handleHomeClick = (e) => {
-        e.preventDefault();
-        onHomeClick();
     };
 
-    const handleCartClick = (e) => {
-        e.preventDefault();
-        setShowCart(true); // Set showCart to true when cart icon is clicked
-    };
-    const handlePlantsClick = (e) => {
-        e.preventDefault();
-        setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
-        setShowCart(false); // Hide the cart when navigating to About Us
-    };
-
-    const handleContinueShopping = (e) => {
-        e.preventDefault();
-        setShowCart(false);
-    };
-   
-    const handleAddToCart = (product) => {
-        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
-      
-        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
-          ...prevState, // Spread the previous state to retain existing entries
-          [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
-        }));
-      };    
-
-      const handleRemoveFromCart = (plantName) => {
-        setAddedToCart(prevState => ({
-            ...prevState,
-            [plantName]: false,
-        }));
-    };
-
-    // Calculate total number of items for the cart count
-    const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);      
     return (
         <div>
             <div className="navbar" style={styleObj}>
                 <div className="tag">
                     <div className="luxury">
                         <img src="https://cdn.pixabay.com/photo/2020/08/05/13/12/eco-5465432_1280.png" alt="" />
-                        <a href="/" onClick={(e) => handleHomeClick(e)}>
+                        <a href="/" onClick={handleHomeClick}>
                             <div>
                                 <h3 style={{ color: 'white' }}>Paradise Nursery</h3>
                                 <i style={{ color: 'white' }}>Where Green Meets Serenity</i>
                             </div>
                         </a>
                     </div>
-
                 </div>
                 <div style={styleObjUl}>
-                    <div> <a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>Plants</a></div>
-                    <div> <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}><h1 className='cart'><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" id="IconChangeColor" height="68" width="68"><rect width="156" height="156" fill="none"></rect><circle cx="80" cy="216" r="12"></circle><circle cx="184" cy="216" r="12"></circle><path d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8" fill="none" stroke="#faf9f9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" id="mainIconPathAttribute"></path></svg></h1></a></div>
+                    <div><a href="#" onClick={handlePlantsClick} style={styleA}>Plants</a></div>
+                    <div><a href="#" onClick={handleCartClick} style={styleA}>
+                        <h1 className='cart'>
+                            🛒
+                        </h1>
+                    </a></div>
                 </div>
             </div>
+
             {!showCart ? (
                 <div className="product-grid">
-                {plantsArray.map((category, index) => (
-                    <div key={category.category || index}>
-                        <h1>{category.category}</h1>
-                        <div className="product-list">
-                            {category.plants.map((plant, plantIndex) => (
-                                <div className="product-card" key={plant.name || plantIndex}>
-                                    <img
-                                        className="product-image"
-                                        src={plant.image}
-                                        alt={plant.name}
-                                    />
-
-                                    <div className="product-title">{plant.name}</div>
-                                    <div className="product-description">{plant.description}</div>
-                                    <div className="product-cost">{plant.cost}</div>
-
-                                    <button
-                                        className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`}
-                                        onClick={() => handleAddToCart(plant)}
-                                        disabled={addedToCart[plant.name]}
-                                    >
-                                        {addedToCart[plant.name] ? 'Added' : 'Add to Cart'}
-                                    </button>
-                                </div>
-                            ))}
+                    {plantsArray.map((section, index) => (
+                        <div key={index}>
+                            <div className="plantname_heading">
+                                <h2 className="plant_heading">{section.category}</h2>
+                            </div>
+                            <div className="product-list">
+                                {section.plants.map((plant, i) => (
+                                    <div className="product-card" key={i}>
+                                        <img className="product-image" src={plant.image} alt={plant.name} />
+                                        <h3 className="product-title">{plant.name}</h3>
+                                        <p>{plant.description}</p>
+                                        <p className="product-price">{plant.cost}</p>
+                                        <button
+                                            className={`product-button ${addedToCart[plant.name] ? 'added-to-cart' : ''}`}
+                                            onClick={() => handleAddToCart(plant)}
+                                            disabled={addedToCart[plant.name]}
+                                        >
+                                            {addedToCart[plant.name] ? 'Added' : 'Add to Cart'}
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
             ) : (
                 <CartItem onContinueShopping={handleContinueShopping} />
             )}
         </div>
     );
 }
+
+ProductList.propTypes = {
+    onHomeClick: PropTypes.func.isRequired
+};
 
 export default ProductList;
