@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false);
-    const [addedToCart, setAddedToCart] = useState({}); // State to control the visibility of the About Us page
+    const [addedToCart, setAddedToCart] = useState({});
+    const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.cart.items); // State to control the visibility of the About Us page
 
     const plantsArray = [
         {
@@ -263,6 +266,16 @@ function ProductList({ onHomeClick }) {
           [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
         }));
       };    
+
+      const handleRemoveFromCart = (plantName) => {
+        setAddedToCart(prevState => ({
+            ...prevState,
+            [plantName]: false,
+        }));
+    };
+
+    // Calculate total number of items for the cart count
+    const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);      
     return (
         <div>
             <div className="navbar" style={styleObj}>
